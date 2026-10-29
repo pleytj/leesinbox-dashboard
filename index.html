@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leesinbox</title>
+<meta name="robots" content="noindex">
+<style>
+:root{
+  --bg:#f6f4ef; --panel:#fffdf9; --ink:#1d1c1a; --muted:#6b675f; --line:#e4dfd5; --soft:#efebe3;
+  --accent:#2f5d50; --accent-soft:#e2ece8;
+  --li:#0a66c2; --md:#1a1a1a; --hbr:#a51c30; --eco:#e3120b; --other:#7a6a52;
+  --hoog:#2f5d50; --middel:#b08a2e; --laag:#b9b2a5; --star:#b9820f;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#151513; --panel:#1d1c1a; --ink:#ece8e0; --muted:#a19b90; --line:#33312d; --soft:#262522;
+  --accent:#8fc3b2; --accent-soft:#22332d; --md:#d8d4cc; --laag:#5d5850; --star:#e3b450;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,"Segoe UI",system-ui,sans-serif}
+a{color:inherit}
+header{padding:22px 28px 14px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+header h1{margin:0;font:600 22px/1.2 Georgia,"Times New Roman",serif;letter-spacing:.2px}
+header .meta{color:var(--muted);font-size:13px}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 64px)}
+nav{border-right:1px solid var(--line);padding:18px 14px;position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto}
+nav h2{font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin:16px 6px 6px;padding:14px 4px 0;font-weight:700;border-top:1px solid var(--line)}
+nav h2:first-child{border-top:0;padding-top:0;margin-top:2px}
+nav h2.coll{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+nav h2.coll:hover .chev{color:var(--accent);background:var(--accent-soft)}
+nav .chev{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;color:var(--muted)}
+nav .chev svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+nav button.navmore svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;margin-right:4px}
+nav button.navmore{color:var(--muted);font-size:12.5px;padding:4px 10px;justify-content:flex-start}
+nav button.navmore:hover{color:var(--accent);background:none}
+nav button{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;border:0;background:none;color:var(--ink);padding:7px 10px;border-radius:7px;cursor:pointer;font:inherit;font-size:14px;gap:8px}
+nav button:hover{background:var(--soft)}
+nav button.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+nav .n{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+main{padding:18px 28px 60px;min-width:0}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.bar input[type=search]{flex:1 1 240px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font:inherit}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:5px 11px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+select{padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font:inherit;font-size:13px}
+.sec{margin:6px 0 30px}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin:0 0 10px}
+.sec-h h3{margin:0;font:600 18px/1.3 Georgia,serif}
+.sec-h .n{color:var(--muted);font-size:13px}
+.sec-h button{margin-left:auto;border:0;background:none;color:var(--accent);cursor:pointer;font:inherit;font-size:13px}
+.srcmix{display:flex;height:4px;border-radius:2px;overflow:hidden;width:120px;background:var(--soft)}
+.grid{display:grid;gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:4px 16px}
+.card:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.top .old{color:var(--middel);font-weight:600}
+.top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.badge{color:#fff;font-weight:600;font-size:11px;letter-spacing:.03em;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+.title{font:600 16px/1.35 Georgia,serif;margin:4px 0 2px;cursor:pointer}
+.title:hover{color:var(--accent)}
+.tldr{color:var(--ink);opacity:.88;font-size:14px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card.open .tldr{-webkit-line-clamp:unset}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:12px;background:var(--soft);border-radius:5px;padding:2px 7px;color:var(--muted);cursor:pointer;border:0;font-family:inherit}
+.tag:hover{color:var(--accent)}
+.vlink{color:var(--accent);text-decoration:none;font-weight:600}.vlink:hover{text-decoration:underline}
+.stars{display:inline-flex;margin-left:2px}
+.star{border:0;background:none;padding:0 1px;font-size:15px;line-height:1;color:var(--muted);cursor:pointer}
+.star.on,.star:hover{color:var(--star)}
+.star:focus-visible{outline:2px solid var(--accent);border-radius:3px}
+.tag.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.sec-h button.clear{border:1px solid var(--accent);border-radius:6px;padding:2px 9px}
+.sec-h button + button.clear{margin-left:8px}
+.resetall{border:0;background:none;color:var(--accent);cursor:pointer;font:inherit;font-size:13px;text-decoration:underline}
+.thumb{grid-row:1 / span 3;grid-column:2;width:120px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:var(--soft)}
+.more{grid-column:1 / -1;display:none;border-top:1px solid var(--line);margin-top:10px;padding-top:10px;font-size:14px}
+.card.open .more{display:block}
+.more h4{margin:8px 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.more ul{margin:0;padding-left:18px}.more li{margin:3px 0}
+.links{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:13.5px}
+.links a{color:var(--accent);text-decoration:none;font-weight:600}.links a:hover{text-decoration:underline}
+.mine{background:var(--accent-soft);border-radius:8px;padding:8px 10px;margin-top:8px;white-space:pre-wrap}
+.empty{color:var(--muted);padding:30px 0}
+.wk{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:22px}
+.wk h2{margin:0 0 4px;font:600 21px/1.3 Georgia,serif}
+.wk .sub{color:var(--muted);font-size:13px;margin-bottom:12px}
+.wk .thread{font-size:15.5px;line-height:1.6;border-left:3px solid var(--accent);padding-left:14px;margin:6px 0 4px}
+.top5{display:grid;gap:14px;margin:6px 0 26px}
+.t5{display:grid;grid-template-columns:44px 1fr;gap:4px 12px}
+.t5 .num{font:600 30px/1 Georgia,serif;color:var(--accent);text-align:center;padding-top:4px}
+.t5 h3{margin:2px 0 4px;font:600 17px/1.35 Georgia,serif}
+.t5 p{margin:0 0 6px;font-size:14.5px}
+.t5 .so{color:var(--accent);font-size:14px;margin-bottom:8px}
+.t5 .also{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--muted);align-items:center}
+.t5 .card{grid-column:2}
+.lines{margin:4px 0 0;padding-left:18px;font-size:14px}.lines li{margin:3px 0}
+.bnum{display:inline-block;min-width:22px;padding:1px 6px;margin-right:6px;border-radius:10px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums}
+.bnum.big{font-size:15px;padding:2px 9px;vertical-align:3px}
+.wk.batch p,.wk.batch li{font-size:14.5px;line-height:1.6}.wk.batch h2+div h2{font-size:17px}.wk.batch h3,.wk.batch h4{margin:16px 0 6px}
+a.notelink{color:var(--accent);text-decoration:underline dotted;cursor:pointer}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px;margin:10px 0 18px}
+.lgroup{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px 8px;min-width:0}
+.lg-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-weight:700;font-size:13.5px;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.lg-h .n{color:var(--muted);font-weight:400;font-size:12px;font-variant-numeric:tabular-nums}
+.lgroup ul{list-style:none;margin:0;padding:0}
+.wk.batch .lgroup li,.lgroup li{font-size:13.5px;line-height:1.45;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lgroup li::before{content:"•";color:var(--muted);margin-right:.3em}.lgroup li a.notelink{text-decoration:none}.lgroup li a.notelink:hover{text-decoration:underline}
+.backbtn{font:inherit;cursor:pointer;border:1px solid var(--accent);color:var(--accent);background:var(--panel);border-radius:999px}
+.backbtn.float{position:fixed;right:22px;bottom:22px;z-index:50;padding:9px 16px;font-size:14px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.backbtn.float:hover,.backbtn.incard:hover{background:var(--accent);color:#fff}
+.card:has(>.backbtn.incard){position:relative}.backbtn.incard{position:absolute;top:10px;right:12px;z-index:5;padding:3px 11px;font-size:12.5px;white-space:nowrap}
+a.backflash{background:color-mix(in srgb,var(--accent) 22%,transparent);border-radius:4px;transition:background .4s}
+.card{scroll-margin-top:16px}
+.card.flash{outline:3px solid var(--accent);outline-offset:2px;transition:outline .3s}
+.banner{display:flex;gap:14px;align-items:center;background:var(--accent-soft);border-radius:12px;padding:12px 16px;margin-bottom:20px;cursor:pointer}
+.banner b{color:var(--accent);white-space:nowrap}
+.banner span{font-size:14px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.star{color:var(--accent);font-size:11px;margin-left:4px}
+.posts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:10px 0 26px}
+.post{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;min-width:0}
+.post .ph{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.post .ph .aud{font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--accent)}
+.post .ph .wc{color:var(--muted);font-size:12px;margin-left:auto}
+.post pre{white-space:pre-wrap;word-wrap:break-word;font:14.5px/1.6 -apple-system,"Segoe UI",system-ui,sans-serif;margin:0;color:var(--ink)}
+.copy{border:1px solid var(--accent);background:var(--accent);color:var(--panel);border-radius:7px;padding:5px 11px;font:inherit;font-size:12.5px;cursor:pointer}
+.copy.done{background:var(--accent-soft);color:var(--accent)}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:10px;vertical-align:middle}
+.lang button{border:0;background:var(--panel);color:var(--ink);padding:4px 12px;font:inherit;font-size:13px;cursor:pointer}
+.lang button.on{background:var(--accent);color:var(--panel)}
+.cov{background:var(--soft);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--muted);margin:6px 0 4px}
+@media (max-width:1100px){.posts{grid-template-columns:1fr}}
+.thumb{cursor:zoom-in}
+.title{user-select:none}
+.fold{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;cursor:pointer;padding:0;margin-left:auto}
+.fold:hover{color:var(--accent)}
+.tog{border:0;background:none;color:var(--muted);cursor:pointer;font-size:13px;padding:0 0 0 6px}
+.lb{position:fixed;inset:0;background:rgba(20,19,17,.72);z-index:50;display:flex;padding:24px}
+.lb-in{background:var(--panel);border-radius:14px;display:grid;grid-template-columns:minmax(300px,34%) 1fr;width:100%;height:100%;overflow:hidden}
+.lb-text{overflow:auto;padding:22px 22px 30px;border-right:1px solid var(--line);font-size:14.5px}
+.lb-text h3{font:600 19px/1.35 Georgia,serif;margin:8px 0 10px}
+.lb-text h4{margin:14px 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.lb-text ul{margin:0;padding-left:18px}.lb-text li{margin:4px 0}
+.lb-img{position:relative;display:flex;align-items:center;justify-content:center;background:var(--soft);overflow:auto;padding:16px}
+.lb-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 2px 16px rgba(0,0,0,.18);background:#fff}
+.lb-img img.zoom{max-width:none;max-height:none;cursor:zoom-out}
+.lb-x{position:absolute;top:12px;right:14px;border:0;background:var(--panel);color:var(--ink);width:34px;height:34px;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);border:0;background:var(--panel);color:var(--ink);width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.lb-prev{left:12px}.lb-next{right:12px}
+.lb-count{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:var(--panel);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--muted)}
+.deeplink{border:0;background:none;padding:0;font:inherit;color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none}
+.deeplink:hover{text-decoration:underline}
+.deeplink.req{color:var(--muted);font-weight:500;cursor:default;text-decoration:none}
+.lb-in.deep{display:block;max-width:860px;margin:0 auto;overflow:auto;position:relative}
+.deep-body{padding:26px 34px 40px;font-size:15.5px;line-height:1.65}
+.deep-body .top{margin-bottom:6px}
+.deep-body h2{font:600 23px/1.3 Georgia,serif;margin:6px 0 14px}
+.deep-body h3{font:600 17.5px/1.35 Georgia,serif;margin:22px 0 6px}
+.deep-body h4{font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:16px 0 4px}
+.deep-body p{margin:0 0 10px}
+.deep-body ul,.deep-body ol{margin:0 0 10px;padding-left:22px}.deep-body li{margin:4px 0}
+.deep-body blockquote{margin:10px 0;padding:4px 0 4px 14px;border-left:3px solid var(--accent);color:var(--muted);font-style:italic}
+.deep-body a{color:var(--accent)}
+.deep-body .links{border-top:1px solid var(--line);padding-top:12px;margin-top:22px}
+.deep .lb-x{position:sticky;float:right;top:12px;margin:12px 14px 0 0}
+@media print{body>*:not(.lb){display:none!important}.lb{position:static;background:none;padding:0;display:block}.lb-in.deep{max-width:none;height:auto;overflow:visible;border-radius:0}.lb-x,.deep-body .links{display:none!important}.deep-body{padding:0;font-size:11pt}}
+.terms-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 14px}
+.terms-head input{flex:1 1 220px;min-width:0;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--panel);color:var(--ink);font:inherit}
+.tchips{display:flex;gap:6px;flex-wrap:wrap}
+.tchips button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 11px;font:inherit;font-size:13px;cursor:pointer}
+.tchips button.on{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.tlist{display:grid;gap:0;border-top:1px solid var(--line)}
+.trow{display:grid;grid-template-columns:minmax(0,1fr) 112px 86px;gap:6px 16px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer;align-items:start}
+.trow:hover{background:var(--soft)}
+.trow .tn{font-weight:600;font-size:15px}
+.trow .tn .soort{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
+.trow .tu{color:var(--muted);font-size:13.5px;margin-top:3px;line-height:1.45}
+.trow .tm{font-size:12.5px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.trow .tm b{display:block;color:var(--ink);font-size:15px}
+.pill{display:inline-block;border-radius:999px;padding:1px 8px;font-size:11.5px;font-weight:600;margin-left:6px;vertical-align:1px;background:var(--soft);color:var(--muted)}
+.pill.nieuw{background:var(--accent);color:var(--panel)}
+.pill.stijgend{background:var(--accent-soft);color:var(--accent)}
+.spark{display:block;margin-top:2px}
+.spark rect{fill:var(--accent)}
+.spark rect.z{fill:var(--line)}
+.cands{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 6px}
+.cands button{border:1px dashed var(--line);background:none;color:var(--ink);border-radius:8px;padding:4px 9px;font:inherit;font-size:13px;cursor:pointer}
+.cands button span{color:var(--muted);font-size:12px;margin-left:5px}
+.tdef{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:18px}
+.tdef h2{margin:0 0 6px;font:600 21px/1.3 Georgia,serif}
+.tdef p{margin:0 0 10px;font-size:15px;line-height:1.6;max-width:70ch}
+.tdef .meta{color:var(--muted);font-size:13px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.tnote{color:var(--muted);font-size:12.5px;margin:10px 0 0}
+@media (max-width:640px){.trow{grid-template-columns:minmax(0,1fr) 86px}.trow .tsp{display:none}}
+@media (max-width:820px){.lb{padding:0}.lb-in{grid-template-columns:1fr;grid-template-rows:55% 45%;border-radius:0}.lb-img{order:-1}.lb-text{border-right:0;border-top:1px solid var(--line)}}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}nav{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line)}main{padding:16px}header{padding:16px}.thumb{width:72px;height:56px}}
+.combohint{font-size:12.5px;color:var(--muted);margin:-2px 0 12px}
+/* Consultancy-register: matrix thema × firma en chips */
+.cbm{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;margin:10px 0 4px}
+.cbm th,.cbm td{padding:5px 4px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+.cbm th{font-weight:600;color:var(--muted);font-size:12px}
+.cbm th.rowh,.cbm td.rowh{text-align:left;white-space:normal;min-width:150px;max-width:220px;font-weight:600;color:var(--ink);cursor:pointer;font-size:13px}
+.cbm th.colh{cursor:pointer;max-width:64px;white-space:normal;line-height:1.15;vertical-align:bottom;font-size:11.5px}
+.cbm th.colh:hover,.cbm td.rowh:hover{color:var(--accent)}
+.cbm td.c{cursor:pointer;border-radius:6px}
+.cbm td.c:hover{background:var(--soft)}
+.cbm td.c b{color:var(--accent);font-variant-numeric:tabular-nums}
+.cbm td.c span{color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.cbm td.c.none{color:var(--line)}
+.cbm tr.on td,.cbm tr.on th{background:var(--accent-soft)}
+.cbm .tot{color:var(--muted);font-weight:600}
+.cbwrap{overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px 8px;margin-bottom:22px}
+.cbwrap h2{margin:2px 0 2px;font:600 21px/1.3 Georgia,serif}
+.cbwrap .sub{color:var(--muted);font-size:13px;margin-bottom:6px}
+.cbwrap .legend{color:var(--muted);font-size:12px;margin:6px 0 2px}
+.tag.cb{background:color-mix(in srgb,var(--accent) 12%,var(--panel));color:var(--accent);border:1px dashed color-mix(in srgb,var(--accent) 45%,var(--line))}
+.tag.cb.on{background:var(--accent);color:var(--panel);border-style:solid}
+.todo{display:grid;gap:0;border-top:1px solid var(--line);margin-top:6px}
+.todo .row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;padding:9px 4px;border-bottom:1px solid var(--line);align-items:baseline;font-size:14px}
+.todo .row .t{font-weight:600}
+.todo .row .t a{text-decoration:none}.todo .row .t a:hover{color:var(--accent);text-decoration:underline}
+.todo .row .o{grid-column:2;color:var(--muted);font-size:13px;line-height:1.45}
+.todo .row .k{color:var(--muted);font-size:12px;white-space:nowrap}
+.todo .row .k a{color:var(--accent);text-decoration:none;font-weight:600;margin-left:8px}
+.cbnav{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+nav button.sub{padding-left:22px;font-size:13.5px}
+nav button.sub .dos{color:var(--accent);font-size:11px;margin-left:6px}
+.cbgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:0 0 22px}
+.cbgrid .cbc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.cbgrid .cbc:hover{border-color:var(--accent)}
+.cbgrid .cbc h4{margin:0 0 6px;font:600 15px/1.3 Georgia,serif}
+.cbgrid .cbc p{margin:0 0 8px;font-size:13.5px;line-height:1.5}
+.cbgrid .cbc p.none{color:var(--muted);font-style:italic}
+.cbgrid .cbc .k{color:var(--muted);font-size:12px}
+.cbgrid .cbc .k b{color:var(--accent)}
+.wk.dossier{border-left:4px solid var(--accent)}
+.wk.dossier .kern{font-size:16px;line-height:1.55;font-weight:600;margin:4px 0 10px}
+.wk.dossier p,.wk.dossier li{font-size:14.5px;line-height:1.6}
+.wk.dossier .body h3{font-size:17px;margin:18px 0 6px;color:var(--ink)}
+.wk.dossier .body h4{font-size:15px;margin:14px 0 4px;color:var(--ink)}
+.wk.dossier > h2{margin-top:0}
+.wk.dossier .body.fold{max-height:340px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 70%,transparent)}
+.wk.dossier .dmore{border:1px solid var(--accent);color:var(--accent);background:none;border-radius:6px;padding:4px 12px;cursor:pointer;font:inherit;font-size:13px;margin-top:6px}
+table.md{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0 10px}
+table.md th,table.md td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.md th{color:var(--muted);font-weight:600;font-size:12px}
+.cbmore{display:flex;gap:10px;align-items:center;background:color-mix(in srgb,var(--accent) 7%,var(--panel));border:1px dashed color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:10px;padding:9px 14px;margin:-6px 0 22px;cursor:pointer;font-size:13.5px}
+.cbmore:hover{border-style:solid}
+.cbmore b{color:var(--accent)}
+.relmeta{color:var(--muted,#888);font-size:.85em}
+</style>
+</head>
+<body>
+<header><h1>Leesinbox</h1><span class="meta" id="meta"></span></header>
+<div class="wrap">
+<nav id="nav"></nav>
+<main>
+  <div class="bar">
+    <input type="search" id="q" placeholder="Zoek in titels, samenvattingen, auteurs…">
+    <div class="chips" id="srcs"></div>
+    <select id="rel"><option value="">Alle relevantie</option><option value="hoog">Alleen hoog</option><option value="middel">Hoog + middel</option></select>
+    <select id="sort"><option value="date">Nieuwste eerst</option><option value="rel">Relevantie</option><option value="stars">Sterren</option></select>
+    <label class="chip" id="vidl"><input type="checkbox" id="vid" style="margin:0"> met video</label>
+    <label class="chip" id="favl" title="Alleen artikelen waaraan je sterren gaf"><input type="checkbox" id="fav" style="margin:0"> ★ favorieten</label>
+    <label class="chip" id="onepl" title="Alleen artikelen met een uitgebreide samenvatting (one-pager)"><input type="checkbox" id="onep" style="margin:0"> one-pager</label>
+    <label class="chip" id="coursel" title="Cursussen, colleges, leerpaden, certificeringsroutes en tutorials"><input type="checkbox" id="course" style="margin:0"> cursussen</label>
+    <label class="chip" id="bankl" title="Stukken die specifiek over banken, fintechs of de financiële sector gaan; hypotheken en leningen bovenaan"><input type="checkbox" id="bank" style="margin:0"> banken</label>
+    <label class="chip" id="claudel" title="Stukken met praktische tips, trucs en werkwijzen voor werken met Claude (Claude Code, Cowork, skills, CLAUDE.md, hooks, subagents)"><input type="checkbox" id="claudef" style="margin:0"> Claude</label>
+    <label class="chip" id="lml" title="Leadmagneten: posts die iets gratis aanbieden (gids, skills, PDF, webinar) in ruil voor een reactie, DM of aanmelding"><input type="checkbox" id="lmf" style="margin:0"> leadmagneten</label>
+  </div>
+  <div id="out"></div>
+</main>
+</div>
+
+<style>
+#ol-gate{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px}
+#ol-gate .box{max-width:420px;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px 24px}
+#ol-gate h1{font-size:22px;margin:0 0 8px} #ol-gate p{color:var(--muted);margin:8px 0 16px}
+#ol-gate button,#ol-reader button{font:inherit;border:0;border-radius:8px;padding:10px 18px;background:var(--accent);color:#fff;cursor:pointer}
+#ol-reader{position:fixed;inset:0;z-index:9000;background:var(--bg);overflow:auto;display:none}
+#ol-reader .bar{position:sticky;top:0;display:flex;gap:12px;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+#ol-reader .bar span{color:var(--muted);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#ol-reader .doc{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+#ol-toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:9500;background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:14px;display:none}
+</style>
+<div id="ol-gate"><div class="box"><h1>Leesinbox</h1><p id="ol-msg">Laden…</p><button id="ol-login" style="display:none">Inloggen met Microsoft</button></div></div>
+<div id="ol-reader"><div class="bar"><span id="ol-path"></span><button id="ol-close">Sluiten</button></div><div class="doc" id="ol-doc"></div></div>
+<div id="ol-toast"></div>
+<script>
+window.ONLINE = (()=>{
+  const CFG={client:"b610a826-a49f-49ae-a4b5-f6e8f668b514", auth:"https://login.microsoftonline.com/consumers/oauth2/v2.0",
+    scope:"Files.ReadWrite offline_access openid profile", root:"apps/Obsidian Second Brain",
+    redirect: location.origin + location.pathname.replace(/index\.html$/,"")};
+  const G="https://graph.microsoft.com/v1.0/me/drive/root:/";
+  const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}, del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+  const $o=id=>document.getElementById(id);
+  const b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+  const rnd=n=>{const a=new Uint8Array(n); crypto.getRandomValues(a); return b64u(a);};
+  async function login(){
+    const v=rnd(48), s=rnd(16), ch=b64u(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(v)));
+    LS.set("lb.pkce", JSON.stringify({v, s, ret:location.hash}));
+    location.href=CFG.auth+"/authorize?"+new URLSearchParams({client_id:CFG.client, response_type:"code", redirect_uri:CFG.redirect,
+      scope:CFG.scope, code_challenge:ch, code_challenge_method:"S256", state:s, response_mode:"query"});
+  }
+  async function tokenReq(params){
+    const r=await fetch(CFG.auth+"/token",{method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"},
+      body:new URLSearchParams({client_id:CFG.client, scope:CFG.scope, ...params})});
+    const j=await r.json(); if(!r.ok) throw new Error(j.error_description||j.error||("HTTP "+r.status));
+    LS.set("lb.tok", JSON.stringify({at:j.access_token, rt:j.refresh_token, exp:Date.now()+(j.expires_in-120)*1000}));
+    return j.access_token;
+  }
+  async function handleRedirect(){
+    const q=new URLSearchParams(location.search); if(!q.get("code") && !q.get("error")) return;
+    const p=JSON.parse(LS.get("lb.pkce")||"{}"); LS.del("lb.pkce");
+    history.replaceState(null, "", CFG.redirect+(p.ret||""));
+    if(q.get("error")) throw new Error(q.get("error_description")||q.get("error"));
+    if(!p.v || q.get("state")!==p.s) throw new Error("Inloggen niet afgerond, probeer opnieuw.");
+    await tokenReq({grant_type:"authorization_code", code:q.get("code"), redirect_uri:CFG.redirect, code_verifier:p.v});
+  }
+  let refreshing=null;
+  async function token(){
+    const t=JSON.parse(LS.get("lb.tok")||"null");
+    if(t && t.exp>Date.now()) return t.at;
+    if(t && t.rt){ refreshing=refreshing||tokenReq({grant_type:"refresh_token", refresh_token:t.rt}).finally(()=>{refreshing=null;});
+      try{ return await refreshing; }catch(e){} }
+    LS.del("lb.tok"); throw new Error("login");
+  }
+  // vault-pad: '../raw/x' (relatief vanaf reading/) → 'raw/x'; Obsidian-links zonder extensie krijgen .md
+  function norm(rel){ let p=String(rel||"").replace(/\\/g,"/").replace(/^\/+/,""); while(p.startsWith("../")) p=p.slice(3); p=p.replace(/^\.\//,""); return p; }
+  const enc=p=>(CFG.root+"/"+p).split("/").filter(Boolean).map(encodeURIComponent).join("/");
+  async function graph(path, suffix="", opt={}){
+    const at=await token();
+    const r=await fetch(G+enc(path)+suffix, {method:opt.method||"GET", headers:{Authorization:"Bearer "+at, ...(opt.headers||{})}, body:opt.body});
+    if(r.status===401){ LS.del("lb.tok"); gate("Je sessie is verlopen. Log opnieuw in."); throw new Error("login"); }
+    if(!r.ok) throw new Error("OneDrive: HTTP "+r.status+" voor "+path);
+    return r;
+  }
+  const meta=new Map();   // pad → {t, j}; download-URL's zijn ±1 uur geldig
+  async function item(path){ const c=meta.get(path); if(c && Date.now()-c.t<40*60*1000) return c.j;
+    const j=await (await graph(path)).json(); meta.set(path,{t:Date.now(), j}); return j; }
+  async function dl(path){ const u=(await item(path))["@microsoft.graph.downloadUrl"]; if(!u) throw new Error("geen download voor "+path); return u; }
+  async function text(path){ const r=await fetch(await dl(path)); if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); }
+  function toast(m, ms=2500){ const t=$o("ol-toast"); t.textContent=m; t.style.display="block"; clearTimeout(toast.h); toast.h=setTimeout(()=>t.style.display="none", ms); }
+  function gate(msg, showLogin=true){ $o("ol-gate").style.display="flex"; $o("ol-msg").textContent=msg; $o("ol-login").style.display=showLogin?"inline-block":"none"; }
+  // afbeeldingen pas laden als ze in beeld komen
+  const io=("IntersectionObserver" in window) ? new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ io.unobserve(e.target); loadImg(e.target); } }), {rootMargin:"400px"}) : null;
+  function loadImg(im){ dl(norm(im.dataset.vp)).then(u=>{ im.src=u; }).catch(()=>{ if(im.onerror) im.onerror(); }); }
+  function img(im, p){ im.dataset.vp=p; if(io && im.classList.contains("thumb")) io.observe(im); else loadImg(im); }
+  // obsidian://new → bestand direct in de vault schrijven (sterren, aanvragen)
+  async function open(u){
+    if(!String(u).startsWith("obsidian://new")){ toast("Werkt alleen op je laptop"); return; }
+    const q=new URLSearchParams(String(u).split("?")[1]||""); const path=norm(q.get("path"));
+    try{ await graph(path, ":/content", {method:"PUT", headers:{"Content-Type":"text/plain; charset=utf-8"}, body:q.get("content")||""}); toast("Opgeslagen in je vault ✓"); }
+    catch(e){ if(e.message!=="login") toast("Niet opgeslagen: "+e.message, 5000); }
+  }
+  async function reader(rel){
+    let p=norm(rel); if(!/\.[a-z0-9]{1,5}$/i.test(p)) p+=".md";
+    $o("ol-path").textContent=p; const doc=$o("ol-doc"); doc.textContent="Laden…"; $o("ol-reader").style.display="block"; document.body.style.overflow="hidden";
+    try{ const t=(await text(p)).replace(/^---\n[\s\S]*?\n---\n/, ""); doc.textContent=""; doc.append(window.md ? window.md(t) : Object.assign(document.createElement("pre"),{textContent:t})); }
+    catch(e){ doc.textContent="Kon het bestand niet openen: "+e.message; }
+  }
+  $o("ol-close").onclick=()=>{ $o("ol-reader").style.display="none"; document.body.style.overflow=""; };
+  async function openFile(rel){
+    const w=window.open("about:blank","_blank");
+    try{ const j=await item(norm(rel)); const u=j.webUrl||j["@microsoft.graph.downloadUrl"]; if(w) w.location=u; else location.href=u; }
+    catch(e){ if(w) w.close(); toast("Kon de PDF niet openen: "+e.message, 5000); }
+  }
+  document.addEventListener("click", e=>{
+    const a=e.target.closest && e.target.closest("a"); if(!a) return; const h=a.getAttribute("href")||"";
+    if(h.startsWith("#vault:")){ e.preventDefault(); e.stopPropagation(); reader(decodeURIComponent(h.slice(7))); }
+    else if(h.startsWith("#file:")){ e.preventDefault(); e.stopPropagation(); openFile(decodeURIComponent(h.slice(6))); }
+  }, true);
+  $o("ol-login").onclick=()=>login();
+  async function boot(){
+    try{ await handleRedirect(); }catch(e){ gate("Inloggen mislukt: "+e.message); return; }
+    try{ await token(); }catch(e){ gate("Log in met het Microsoft-account van je OneDrive."); return; }
+    try{
+      gate("Data ophalen uit OneDrive…", false);
+      const r=await fetch(await dl("reading/dashboard-data.json")); if(!r.ok) throw new Error("HTTP "+r.status);
+      window.__D=await r.json();
+    }catch(e){ if(e.message!=="login") gate("Kon de data niet ophalen: "+e.message); return; }
+    const s=document.createElement("script"); s.textContent=document.getElementById("main-src").textContent; document.body.append(s);
+    $o("ol-gate").style.display="none";
+  }
+  window.addEventListener("DOMContentLoaded", boot);
+  return { open, img, vault: rel=>"#vault:"+encodeURIComponent(rel), file: rel=>"#file:"+encodeURIComponent(rel) };
+})();
+</script>
+<script type="text/plain" id="main-src">
+const D = window.__D;
+// Obsidian-link op basis van het volledige pad: werkt ongeacht de vaultnaam, zolang de map in Obsidian als vault geopend is.
+const VAULT_ROOT = window.ONLINE ? "" : (()=>{ let r=decodeURIComponent(location.pathname).replace(/\/reading\/[^\/]*$/,""); if(/^\/[A-Za-z]:/.test(r)) r=r.slice(1).replace(/\//g,"\\"); return r; })();
+const SEP = VAULT_ROOT.includes("\\") ? "\\" : "/";
+// Favorieten: 1–3 sterren per artikel. Een klik maakt via obsidian://new het bestand reading/favorieten/<id>.md
+// (sterren: 0 = weer weg). dashboard.py leest die bestanden, zet 'sterren:' in de leesnotitie en maakt reading/mijn-favorieten.md.
+const FAV_KEY="leesinbox.sterren";
+function favLocal(){ try{ return JSON.parse(localStorage.getItem(FAV_KEY)||"{}"); }catch(e){ return {}; } }
+function favSet(id,n){ try{ const m=favLocal(); m[id]=n; localStorage.setItem(FAV_KEY,JSON.stringify(m)); }catch(e){} }
+function starsOf(it){ const m=favLocal(); return (it.id in m) ? m[it.id] : (it.stars||0); }
+(function(){ try{ const m=favLocal(); let ch=false; D.items.forEach(i=>{ if(i.id in m && m[i.id]===(i.stars||0)){ delete m[i.id]; ch=true; } }); if(ch) localStorage.setItem(FAV_KEY,JSON.stringify(m)); }catch(e){} })();
+function favHref(it,n){
+  const d=new Date(), z=x=>String(x).padStart(2,"0");
+  const iso=`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;
+  const path=VAULT_ROOT+SEP+["reading","favorieten",it.id+".md"].join(SEP);
+  const content=`---\ntype: favoriet\nnote: "[[${it.id}]]"\ntitle: "${(it.title||"").replace(/"/g,"'")}"\nsterren: ${n}\nrated-at: ${iso}\n---\n\n${n?"★".repeat(n)+" voor":"Geen sterren meer voor"} [[${it.id}]]\n`;
+  return "obsidian://new?path="+encodeURIComponent(path)+"&content="+encodeURIComponent(content)+"&silent=true&overwrite=true";
+}
+function openUri(u){ if(window.ONLINE) return ONLINE.open(u); const a=document.createElement("a"); a.href=u; a.style.display="none"; document.body.append(a); a.click(); a.remove(); }
+function starsEl(it){
+  const box=el("span","stars"); const cur=starsOf(it); box.dataset.fav=it.id;
+  for(let n=1;n<=3;n++){ const b=el("button","star"+(n<=cur?" on":""), n<=cur?"★":"☆");
+    b.title = n===cur ? "Klik nog eens om de sterren weg te halen" : `${n} ster${n>1?"ren":""} geven (wordt bewaard in Obsidian)`;
+    b.setAttribute("aria-label", `${n} ster${n>1?"ren":""}`);
+    b.onclick=e=>{ e.stopPropagation(); const nv=(n===starsOf(it))?0:n; favSet(it.id,nv); openUri(favHref(it,nv));
+      if(st.fav||st.theme==="__fav"||st.sort==="stars") render(); else document.querySelectorAll('.stars[data-fav="'+it.id+'"]').forEach(x=>x.replaceWith(starsEl(it))); };
+    box.append(b); }
+  return box;
+}
+function favView(){
+  const out=$("out"); const vis=D.items.filter(pass); let any=false;
+  [[3,"★★★ Topfavorieten"],[2,"★★ Erg goed"],[1,"★ Bewaren"]].forEach(([n,t])=>{ const l=vis.filter(i=>starsOf(i)===n); if(l.length){ any=true; out.append(section(t,l,"__fav")); } });
+  if(!any) out.append(el("div","empty","Nog geen favorieten. Geef een artikel één tot drie sterren met de ☆☆☆ op de kaart."));
+}
+function obsLink(rel){ if(window.ONLINE) return ONLINE.vault(rel); return "obsidian://open?path="+encodeURIComponent(VAULT_ROOT+SEP+rel.split("/").join(SEP)); }
+function fileLink(rel){ if(window.ONLINE) return ONLINE.file(rel); return "../"+rel.split("/").map(encodeURIComponent).join("/"); }  // relatief vanaf reading/ → opent het bestand uit de vault direct in de browser
+// Online dashboard (2026-10-29): afbeeldingen via OneDrive; lokaal gewoon het pad.
+function IMG(im,p){ if(window.ONLINE) ONLINE.img(im,p); else im.src=p; }
+function sourceLinks(it, L){
+  if(it.url){ const a=el("a",null,"Origineel ↗"); a.href=it.url; a.target="_blank"; a.rel="noopener"; a.title="De oorspronkelijke post of pagina (online)"; L.append(a); }
+  if(it.aurl && it.aurl!==it.url){ const a=el("a",null,"Artikel (web) ↗"); a.href=it.aurl; a.target="_blank"; a.rel="noopener"; a.title="Het gelinkte artikel of rapport op de site van de bron (online)"; L.append(a); }
+  if(it.pdf){ const a=el("a",null,"Artikel-PDF"); a.href=fileLink(it.pdf); a.target="_blank"; a.title="Opent de PDF uit je vault — werkt ook als de bron offline is of het abonnement stopt"; L.append(a); }
+  if(it.ft){ const a=el("a",null,"Volledige tekst"); a.href=obsLink(it.ft); a.title="Opent de volledige tekst in Obsidian (persoonlijk archief)"; L.append(a); }
+}
+
+// Uitgebreide samenvatting (one-pager) op verzoek: de knop maakt via obsidian://new een verzoekbestand in reading/verzoeken/.
+// Een agent verwerkt die verzoeken ('verwerk de verzoeken', _tools/verdieping.py); daarna staat de one-pager in reading/verdieping/.
+const REQ_KEY="leesinbox.verzoeken";
+function reqLocal(){ try{ return new Set(JSON.parse(localStorage.getItem(REQ_KEY)||"[]")); }catch(e){ return new Set(); } }
+function reqMark(id){ try{ const s=reqLocal(); s.add(id); localStorage.setItem(REQ_KEY, JSON.stringify([...s])); }catch(e){} }
+function reqHref(it){
+  const d=new Date(), z=n=>String(n).padStart(2,"0");
+  const iso=`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;
+  const path=VAULT_ROOT+SEP+["reading","verzoeken","uitgebreid-"+it.id+".md"].join(SEP);
+  const content=`---\ntype: verzoek\nsoort: uitgebreide-samenvatting\nnote: "[[${it.id}]]"\ntitle: "${(it.title||"").replace(/"/g,"'")}"\nstatus: open\nrequested-at: ${iso}\nrequested-via: dashboard\n---\n\nVerzoek om een uitgebreide samenvatting (one-pager) van [[${it.id}]]. Wordt verwerkt met 'verwerk de verzoeken'.\n`;
+  return "obsidian://new?path="+encodeURIComponent(path)+"&content="+encodeURIComponent(content)+"&silent=true&overwrite=true";
+}
+function reqLink(it, label){
+  const a=el("a","deeplink",label); a.href="#"; a.title="Maakt een verzoek in je vault (reading/verzoeken). Verwerken: zeg 'verwerk de verzoeken' tegen Claude, of laat het aan het eind van de dag draaien.";
+  a.onclick=e=>{ e.stopPropagation(); if(window.ONLINE){ e.preventDefault(); ONLINE.open(reqHref(it)); } else a.href=reqHref(it); reqMark(it.id); setTimeout(()=>{ document.querySelectorAll('[data-req="'+it.id+'"]').forEach(x=>{ x.replaceWith(reqDone()); }); },400); };
+  a.dataset.req=it.id; return a;
+}
+function reqDone(){ const s=el("span","deeplink req","Uitgebreide samenvatting aangevraagd ✓"); s.title="Het verzoek staat in reading/verzoeken. Na 'verwerk de verzoeken' (en een nieuw dashboard) staat de one-pager hier."; return s; }
+function deepLinks(it, L){
+  if(it.vp){ const b=el("button","deeplink","📄 Uitgebreide samenvatting"); b.title="Lees de one-pager"; b.onclick=e=>{ e.stopPropagation(); openDeep(it); }; L.append(b); }
+  else if(it.req || reqLocal().has(it.id)) L.append(reqDone());
+  else L.append(reqLink(it, "＋ Uitgebreide samenvatting aanvragen"));
+}
+function inl(parent, text){
+  (text||"").split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)\s]+\)|\*[^*\s][^*]*\*)/).forEach(seg=>{
+    if(!seg) return;
+    let m;
+    if(/^\*\*[^*]+\*\*$/.test(seg)) parent.append(inl(el("strong"),seg.slice(2,-2)));
+    else if((m=seg.match(/^\[([^\]]+)\]\(([^)\s]+)\)$/))){ const a=el("a",null,m[1]); a.href=m[2];
+      if(m[2].startsWith("#r-")){ const id=m[2].slice(1); a.className="notelink"; a.title="Toon deze leesnotitie"; a.onclick=e=>{ e.preventDefault(); showNote(id, a); }; }
+      else { a.target="_blank"; a.rel="noopener"; }
+      parent.append(a); }
+    else if(/^\*[^*\s][^*]*\*$/.test(seg)) parent.append(el("em",null,seg.slice(1,-1)));
+    else parent.append(document.createTextNode(seg));
+  }); return parent;
+}
+// Alinea "**Label (n):** [titel](#id) · [titel](#id) · ..." (lange linkreeks in batchverslagen) → blok met één titel per regel;
+// opeenvolgende blokken komen naast elkaar in een raster (3 kolommen op een breed scherm). Jacko, 2026-10-17.
+function linkGroup(t){
+  const m=t.match(/^\*\*([^*]+?)\*\*\s*(.+)$/); if(!m) return null;
+  const parts=m[2].split(/\s+·\s+/); if(parts.length<3) return null;
+  if(!parts.every(x=>/^\[[^\]]+\]\([^)\s]+\)$/.test(x.trim()))) return null;
+  const lab=m[1].replace(/:\s*$/,""), lm=lab.match(/^(.*?)\s*\((\d+)\)$/);
+  const g=el("div","lgroup"), h=el("div","lg-h"); h.append(el("span",null,lm?lm[1]:lab), el("span","n",lm?lm[2]:String(parts.length))); g.append(h);
+  const ul=el("ul"); parts.forEach(x=>{ const li=inl(el("li"),x.trim()); const a=li.querySelector("a");
+    if(a){ const id=(a.getAttribute("href")||"").replace(/^#/,""), o=byId(id); a.title=o?[o.title,o.author,o.date].filter(Boolean).join(" · "):a.textContent; }
+    ul.append(li); }); g.append(ul); return g;
+}
+function md(text){
+  const box=el("div"); let list=null, para=[], tbl=null;
+  const flush=()=>{ if(!para.length) return; const t=para.join(" "); para=[]; const g=linkGroup(t);
+    if(g){ let grid=box.lastChild; if(!grid||!grid.classList||!grid.classList.contains("lgrid")){ grid=el("div","lgrid"); box.append(grid); } grid.append(g); }
+    else box.append(inl(el("p"),t)); };
+  const cells=l=>l.trim().replace(/^\||\|$/g,"").split("|").map(c=>c.trim());
+  (text||"").split(/\n/).forEach(raw=>{
+    const l=raw.trimEnd(); let m;
+    if(/^\s*\|.*\|\s*$/.test(l)){ flush(); list=null;
+      if(/^\s*\|[\s:|-]+\|\s*$/.test(l)) return;
+      if(!tbl){ tbl=el("table","md"); const tr=el("tr"); cells(l).forEach(c=>tr.append(inl(el("th"),c))); tbl.append(tr); box.append(tbl); }
+      else { const tr=el("tr"); cells(l).forEach(c=>tr.append(inl(el("td"),c))); tbl.append(tr); }
+      return; }
+    tbl=null;
+    if(!l.trim()){ flush(); list=null; return; }
+    if((m=l.match(/^(#{1,4})\s+(.*)$/))){ flush(); list=null; box.append(inl(el(["h2","h3","h4","h4"][m[1].length-1]),m[2])); return; }
+    if((m=l.match(/^\s*[-*]\s+(.*)$/))){ flush(); if(!list||list.tagName!=="UL"){ list=el("ul"); box.append(list); } list.append(inl(el("li"),m[1])); return; }
+    if((m=l.match(/^\s*\d+[.)]\s+(.*)$/))){ flush(); if(!list||list.tagName!=="OL"){ list=el("ol"); box.append(list); } list.append(inl(el("li"),m[1])); return; }
+    if((m=l.match(/^>\s?(.*)$/))){ flush(); list=null; box.append(inl(el("blockquote"),m[1])); return; }
+    if(list && /^\s{2,}/.test(raw)){ inl(list.lastChild, " "+l.trim()); return; }
+    list=null; para.push(l.trim());
+  }); flush(); return box;
+}
+function openDeep(it){
+  closeLightbox();
+  const lb=el("div","lb"); const box=el("div","lb-in deep"); const bd=el("div","deep-body");
+  const x=el("button","lb-x","×"); x.title="Sluiten (Esc)"; x.onclick=closeLightbox;
+  const top=el("div","top"); const b=el("span","badge",srcName(it.source)); b.style.background=srcCol(it.source);
+  top.append(b, el("span",null,it.date), el("span",null,"· "+it.author));
+  bd.append(top, md(it.vtext));
+  const L=el("div","links");
+  const a1=el("a",null,"One-pager in Obsidian"); a1.href=obsLink(it.vp); L.append(a1);
+  const a2=el("a",null,"Leesnotitie in Obsidian"); a2.href=obsLink(it.obs); L.append(a2);
+  sourceLinks(it, L);
+  const pr=el("button","deeplink","Afdrukken / PDF"); pr.onclick=()=>window.print(); L.append(pr);
+  if(!(it.req || reqLocal().has(it.id))) L.append(reqLink(it, "Opnieuw laten maken"));
+  bd.append(L); box.append(x, bd); lb.append(box); lb.onclick=e=>{ if(e.target===lb) closeLightbox(); };
+  document.body.append(lb); document.body.style.overflow="hidden"; LB=lb; box.scrollTop=0;
+}
+
+const SRC = {linkedin:["LinkedIn","var(--li)"],medium:["Medium","var(--md)"],hbr:["HBR","var(--hbr)"],economist:["Economist","var(--eco)"],mckinsey:["McKinsey","#1f3a93"],
+  bcg:["BCG","#1b7f4f"],bain:["Bain","#c8102e"],accenture:["Accenture","#a100ff"],deloitte:["Deloitte","#2e7d32"],ey:["EY","#8a7400"],pwc:["PwC","#c75b12"],kpmg:["KPMG","#00338d"],
+  gartner:["Gartner","#1f5fa8"],kearney:["Kearney","#6a3d9a"],microsoft:["Microsoft","#5b6770"],oliverwyman:["Oliver Wyman","#0b5e74"],capgemini:["Capgemini","#0070ad"],ibm:["IBM IBV","#054ada"],rolandberger:["Roland Berger","#1e4d8c"],mitsmr:["MIT SMR","#7a1f2b"]};
+const srcName = s => (SRC[s]||[s])[0], srcCol = s => (SRC[s]||[0,"var(--other)"])[1];
+const RELW = {hoog:3,middel:2,laag:1};
+const st = {theme:"__overview", srcs:new Set(), q:"", rel:"", sort:"date", vid:false, course:false, bank:false, claude:false, lm:false, onep:false, fav:false, open:new Set(), extra:[]};
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; };
+
+function pass(it){
+  if (st.srcs.size && !st.srcs.has(it.source)) return false;
+  if (st.rel==="hoog" && it.rel!=="hoog") return false;
+  if (st.rel==="middel" && it.rel==="laag") return false;
+  if (st.vid && !it.video) return false;
+  if (st.course && !it.course) return false;
+  if (st.bank && !it.bank) return false;
+  if (st.claude && !it.claude) return false;
+  if (st.lm && !it.lm) return false;
+  if (st.onep && !it.vp) return false;
+  if (st.fav && !starsOf(it)) return false;
+  if (st.q){ const h=(it.title+" "+it.tldr+" "+it.author+" "+it.points.join(" ")+" "+it.why).toLowerCase(); if(!st.q.split(/\s+/).every(w=>h.includes(w))) return false; }
+  return true;
+}
+function sorted(a){ return a.slice().sort((x,y)=> (st.bank ? (y.bank==="hypotheek")-(x.bank==="hypotheek") : 0) || (st.sort==="stars" ? (starsOf(y)-starsOf(x)) || y.date.localeCompare(x.date) : st.sort==="rel" ? (RELW[y.rel]-RELW[x.rel]) || y.date.localeCompare(x.date) : y.date.localeCompare(x.date))); }
+const own = it => !it.cbx;   // cbx = binnengehaald via het consultancy-register (channel: consultancy); 'eigen' = zelf gedeeld (LinkedIn, Medium, HBR via LinkedIn, ...)
+const CBK = {"transformatie-aanpak":"Transformatie-aanpak","agentic-ai":"Agentic AI","pilot-naar-waarde":"Van pilot naar waarde","ceo-leiderschap":"CEO en leiderschap","operating-model":"Operating model","workforce-talent":"Workforce en talent","trust-governance":"Trust en governance","adoptie-survey":"Adoptie-surveys","trends-outlook":"Trends en vooruitblik"};
+const cbShort = t => CBK[t] || cbName(t);
+function cbMore(list, key, label){ const b=el("div","cbmore"); b.append(el("span",null,"◆"), rich(el("span"), `${label}: **${list.length}** stukken van consultancyfirma's →`)); b.title="Uit het consultancy-register (McKinsey, BCG, Bain, ...). Klik om ze te zien."; b.onclick=()=>go(key); return b; }
+function inTheme(it,t){ return t==="__none" ? it.themes.length===0 : it.themes.includes(t); }
+// Thema's combineren (Jacko, 2026-10-16): Ctrl-klik (Mac: Cmd-klik) op een tweede thema, in de zijbalk of op een kaart,
+// toont alleen items die ALLE gekozen thema's hebben. Gewone klik kiest weer één thema.
+function selThemes(){ return D.themes[st.theme] ? [st.theme,...st.extra] : []; }
+function isSel(t){ return selThemes().includes(t); }
+function pickTheme(t,e){
+  if(e&&(e.ctrlKey||e.metaKey) && D.themes[t] && D.themes[st.theme]){
+    if(t===st.theme){ if(st.extra.length) st.theme=st.extra.shift(); else { go("__overview"); return; } }
+    else if(st.extra.includes(t)) st.extra=st.extra.filter(x=>x!==t);
+    else st.extra.push(t);
+    render(); window.scrollTo({top:0}); return;
+  }
+  go(t);
+}
+function dropTheme(t){ const s=selThemes().filter(x=>x!==t); if(!s.length){ go("__overview"); return; } st.theme=s[0]; st.extra=s.slice(1); render(); }
+
+function toggleCard(id, open){
+  open ? st.open.add(id) : st.open.delete(id);
+  document.querySelectorAll(".card").forEach(c=>{ if(c.dataset.id===id) c.classList.toggle("open", open); });
+}
+let LB=null;
+function closeLightbox(){ if(LB){ LB.remove(); LB=null; document.body.style.overflow=""; } }
+function openLightbox(it, ix){
+  closeLightbox(); const imgs=it.imgs.length?it.imgs:[it.thumb]; let i=ix;
+  const lb=el("div","lb"); const box=el("div","lb-in");
+  const tx=el("div","lb-text"); const top=el("div","top");
+  const b=el("span","badge",srcName(it.source)); b.style.background=srcCol(it.source); top.append(b, el("span",null,it.date), el("span",null,"· "+it.author));
+  tx.append(top, el("h3",null,it.title), el("div",null,it.tldr));
+  if(it.points.length){ tx.append(el("h4",null,"Kernpunten")); const ul=el("ul"); it.points.forEach(p=>ul.append(el("li",null,p))); tx.append(ul); }
+  if(it.why){ tx.append(el("h4",null,"Waarom relevant")); tx.append(el("div",null,it.why)); }
+  const L=el("div","links"); const a1=el("a",null,"Open in Obsidian"); a1.href=obsLink(it.obs); L.append(a1);
+  sourceLinks(it, L); deepLinks(it, L);
+  tx.append(L);
+  const pane=el("div","lb-img"); const img=el("img"); img.alt=""; img.onclick=()=>img.classList.toggle("zoom"); img.title="Klik om op ware grootte te bekijken";
+  const cnt=el("div","lb-count"); const show=()=>{ IMG(img,imgs[i]); img.classList.remove("zoom"); cnt.textContent=`${i+1} / ${imgs.length}`; };
+  pane.append(img);
+  if(imgs.length>1){ const p=el("button","lb-nav lb-prev","‹"), n=el("button","lb-nav lb-next","›"); p.onclick=()=>{ i=(i-1+imgs.length)%imgs.length; show(); }; n.onclick=()=>{ i=(i+1)%imgs.length; show(); }; pane.append(p,n,cnt); lb._prev=p.onclick; lb._next=n.onclick; }
+  const x=el("button","lb-x","×"); x.title="Sluiten (Esc)"; x.onclick=closeLightbox; pane.append(x);
+  box.append(tx,pane); lb.append(box); lb.onclick=e=>{ if(e.target===lb) closeLightbox(); };
+  document.body.append(lb); document.body.style.overflow="hidden"; LB=lb; show();
+}
+document.addEventListener("keydown",e=>{ if(!LB && e.key==="Escape" && st.theme!=="__overview" && document.activeElement.tagName!=="INPUT"){ go("__overview"); return; } if(!LB) return; if(e.key==="Escape") closeLightbox(); if(e.key==="ArrowLeft"&&LB._prev) LB._prev(); if(e.key==="ArrowRight"&&LB._next) LB._next(); });
+function card(it){
+  const c = el("article","card"+(st.open.has(it.id)?" open":""));
+  const body = el("div");
+  const top = el("div","top");
+  const b = el("span","badge",srcName(it.source)); b.style.background=srcCol(it.source); top.append(b);
+  top.append(el("span",null,it.date), el("span",null,"· "+it.author));
+  if (it.pub && it.pub!==it.date){ const pb=el("span",it.old?"old":null,"· "+(it.old?"ouder werk, gepubl. ":"gepubl. ")+(it.pubApprox?"±":"")+it.pub); if(it.old) pb.title="Gepubliceerd ruim vóór de week waarin je het bewaarde: telt in het weekoverzicht niet als trend van die week."; top.append(pb); }
+  if (it.video){ const vu=it.vurl||it.url; const v=el("a","vlink","▶ video"); if(vu){ v.href=vu; v.target="_blank"; v.rel="noopener"; v.title=it.vurl?"Opent de video":"Opent de oorspronkelijke post, daar staat de video in"; v.onclick=e=>e.stopPropagation(); } top.append(el("span",null,"·"), v); }
+  if (it.course){ const k=el("span","vlink","🎓 cursus"); k.title="Cursus, college, leerpad of tutorial"; top.append(el("span",null,"·"), k); }
+  if (it.bank){ const k=el("span","vlink",it.bank==="hypotheek"?"🏠 hypotheek":"🏦 bank"); k.title=it.bank==="hypotheek"?"Gaat specifiek over hypotheken, leningen of krediet":"Gaat specifiek over banken, fintechs of de financiële sector"; top.append(el("span",null,"·"), k); }
+  if (it.claude){ const k=el("span","vlink","🛠 Claude"); k.title="Praktische tips of werkwijzen voor werken met Claude"; top.append(el("span",null,"·"), k); }
+  if (it.lm){ const k=el("span","vlink","🧲 leadmagnet"); k.title="De post biedt iets gratis aan in ruil voor een reactie, DM of aanmelding; dat aanbod zelf is meestal niet bekeken"; top.append(el("span",null,"·"), k); }
+  if (it.vp){ const v=el("button","deeplink vlink","📄 one-pager"); v.title="Uitgebreide samenvatting lezen"; v.onclick=e=>{ e.stopPropagation(); openDeep(it); }; top.append(el("span",null,"·"), v); }
+  top.append(starsEl(it));
+  const r = el("span","dot"); r.style.background=`var(--${it.rel})`; r.title="relevantie: "+it.rel; top.append(r);
+  if (it.status && it.status!=="te-lezen") top.append(el("span",null,"· "+it.status));
+  c.dataset.id = it.id;
+  const ti = el("div","title",it.title); ti.onclick=()=>toggleCard(it.id, !c.classList.contains("open"));
+  ti.title="Klik om open of dicht te klappen";
+  body.append(top, ti, el("div","tldr",it.tldr));
+  const tags = el("div","tags");
+  it.themes.forEach(t=>{ const on=isSel(t); const x=el("button","tag"+(on?" on":""),(D.themes[t]||t)+(on?" ✕":"")); x.title=on?"Klik om dit thema uit het filter te halen":"Toon alleen items met dit thema (Ctrl-klik: combineer met het gekozen thema)"; x.onclick=e=>{ e.stopPropagation(); (on&&!(e.ctrlKey||e.metaKey)) ? dropTheme(t) : pickTheme(t,e); }; tags.append(x); });
+  if (it.cat) tags.append(el("span","tag",D.cats[it.cat] ? it.cat.replace(/-/g," ") : it.cat));
+  (it.cb||[]).forEach(t=>{ const on=st.theme==="__cb:"+t||st.theme==="__cb:"+t+"|"+it.source; const x=el("button","tag cb"+(on?" on":""),"◆ "+cbName(t)); x.title="Consultancythema (register van adviesfirma's): toon alle items met dit thema"; x.onclick=e=>{ e.stopPropagation(); go("__cb:"+t); }; tags.append(x); });
+  body.append(tags);
+  c.append(body);
+  if (it.thumb){ const im=el("img","thumb"); IMG(im,it.thumb); im.alt=""; im.loading="lazy"; im.title=it.imgs.length>1?`${it.imgs.length} afbeeldingen — klik om te vergroten`:"Klik om te vergroten"; im.onerror=()=>im.remove(); im.onclick=e=>{ e.stopPropagation(); openLightbox(it,0); }; c.append(im); }
+  const m = el("div","more");
+  if (it.points.length){ m.append(el("h4",null,"Kernpunten")); const ul=el("ul"); it.points.forEach(p=>ul.append(el("li",null,p))); m.append(ul); }
+  if (it.why){ m.append(el("h4",null,"Waarom relevant")); m.append(el("div",null,it.why)); }
+  if (it.rel&&it.rel.length){ m.append(el("h4",null,"Lees ook")); const ul=el("ul","rel"); it.rel.forEach(id=>{ const o=byId(id); if(!o) return; const li=el("li"); const a=el("a",null,o.title); a.href="#"+id; a.title="Verwante notitie (gedeelde bron, tags of inhoud): klik om erheen te springen"; a.onclick=e=>{ e.preventDefault(); e.stopPropagation(); showNote(id, a); }; li.append(a, el("span","relmeta"," · "+(o.author||o.source||"")+(o.date?" · "+o.date:""))); ul.append(li); }); m.append(ul); }
+  if (it.mine){ m.append(el("h4",null,"Mijn notitie")); m.append(el("div","mine",it.mine)); }
+  const L = el("div","links");
+  const a1=el("a",null,"Open in Obsidian"); a1.href=obsLink(it.obs); L.append(a1);
+  sourceLinks(it, L); deepLinks(it, L);
+  const f=el("button","fold","▲ Inklappen"); f.onclick=()=>toggleCard(it.id,false); L.append(f);
+  m.append(L); c.append(m);
+  return c;
+}
+
+function mix(list){
+  const bar=el("div","srcmix"); const n=list.length||1; const cnt={};
+  list.forEach(i=>cnt[i.source]=(cnt[i.source]||0)+1);
+  Object.entries(cnt).forEach(([s,k])=>{ const x=el("span"); x.style.cssText=`width:${100*k/n}%;background:${srcCol(s)}`; x.title=`${srcName(s)}: ${k}`; bar.append(x); });
+  return bar;
+}
+
+function rich(parent, text){ (text||"").split(/(\*\*[^*]+\*\*)/).forEach(seg=>{ if(/^\*\*[^*]+\*\*$/.test(seg)) parent.append(el("strong",null,seg.slice(2,-2))); else if(seg) parent.append(document.createTextNode(seg.replace(/\*/g,""))); }); return parent; }
+function lines(text){ const ul=el("ul","lines"); (text||"").split(/\n/).map(l=>l.replace(/^\s*(?:-|\d+\.)\s*/,"").trim()).filter(Boolean).forEach(l=>ul.append(rich(el("li"),l))); return ul; }
+const weekLabel = w => "Week "+parseInt(w.split("-W")[1],10);
+const byId = id => D.items.find(i=>i.id===id);
+function weekView(w){
+  const out=$("out"); const ov=D.weeks[w]; const list=D.items.filter(i=>i.week===w).filter(pass);
+  if (ov){
+    const box=el("div","wk");
+    box.append(el("h2",null,`Weekoverzicht ${weekLabel(w).toLowerCase()}`));
+    box.append(el("div","sub",`${ov.period} · ${ov.n} items · ${ov.status}`));
+    box.append(el("h4",null,"Rode draad")); box.append(rich(el("div","thread"),ov.thread));
+    out.append(box);
+    const h=el("div","sec-h"); h.append(el("h3",null,"Top 5")); out.append(h);
+    const g=el("div","top5");
+    ov.top.forEach((t,ix)=>{
+      const r=el("div","t5"); r.append(el("div","num",ix+1));
+      const b=el("div"); b.append(el("h3",null,t.title)); b.append(rich(el("p"),t.text)); if(t.so) b.append(el("div","so","→ "+t.so));
+      r.append(b);
+      const m=byId(t.main); if(m) r.append(card(m));
+      if (t.also.length){ const a=el("div","also"); a.style.gridColumn="2"; a.append(el("span",null,"Ook:"));
+        t.also.forEach(id=>{ const it=byId(id); const x=el("button","tag",it?it.title:id); if(it) x.onclick=()=>{ st.open.add(id); const c=card(it); x.replaceWith(c); }; a.append(x); }); r.append(a); }
+      g.append(r);
+    });
+    out.append(g);
+    if (ov.extra){ const s2=el("section","sec"); s2.append(el("h3",null,"Ook opvallend")); s2.append(lines(ov.extra)); out.append(s2); }
+    if (ov.older){ const s5=el("section","sec"); s5.append(el("h3",null,"Ouder werk, deze week gelezen")); s5.append(lines(ov.older)); out.append(s5); }
+    if (ov.cands){ const s3=el("section","sec"); s3.append(el("h3",null,"Kandidaat-thema's")); s3.append(lines(ov.cands)); out.append(s3); }
+    if (ov.todo){ const s4=el("section","sec"); s4.append(el("h3",null,"Nog te lezen")); s4.append(lines(ov.todo)); out.append(s4); }
+    const L=el("div","links"); const a=el("a",null,"Weekoverzicht openen in Obsidian"); a.href=obsLink(ov.obs); L.append(a); if((D.updates||{})[w]){ const b=el("a",null,"Naar de weekupdate (LinkedIn) →"); b.href="#"; b.onclick=e=>{e.preventDefault(); go("__update:"+w);}; L.append(b); } out.append(L);
+    out.append(el("div",null," "));
+  } else {
+    out.append(el("div","empty",`Nog geen weekoverzicht voor ${weekLabel(w).toLowerCase()}. Vraag: "maak het weekoverzicht van ${weekLabel(w).toLowerCase()}".`));
+  }
+  out.append(section(`Alle items ${weekLabel(w).toLowerCase()}`, list, "__week:"+w));
+}
+st.lang = "nl";
+function copyText(txt, btn){
+  const ok=()=>{ btn.textContent="Gekopieerd"; btn.classList.add("done"); setTimeout(()=>{btn.textContent="Kopieer";btn.classList.remove("done");},1800); };
+  const fb=()=>{ const ta=document.createElement("textarea"); ta.value=txt; document.body.append(ta); ta.select(); try{document.execCommand("copy"); ok();}catch(e){} ta.remove(); };
+  try{ if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(txt).then(ok,fb); } else fb(); }catch(e){ fb(); }
+}
+function updateView(w){
+  const out=$("out"); const u=D.updates[w];
+  const box=el("div","wk"); const h=el("h2",null,`Weekupdate ${weekLabel(w).toLowerCase()}`);
+  const lg=el("span","lang"); ["nl","en"].forEach(l=>{ const b=el("button",st.lang===l?"on":null,l.toUpperCase()); b.onclick=()=>{ st.lang=l; render(); }; lg.append(b); }); h.append(lg);
+  box.append(h); box.append(el("div","sub",`${u.period} · ${u.n} leesnotities · ${u.status}`));
+  if (u.coverage) box.append(el("div","cov","Dekking: "+u.coverage));
+  out.append(box);
+  const g=el("div","posts");
+  [["business","Business"],["ai","AI-builders"]].forEach(([k,label])=>{
+    const txt=(u.posts[st.lang]||{})[k]||""; const p=el("div","post"); const ph=el("div","ph");
+    const nch=[...txt].length; const wc=el("span","wc",`${nch} tekens · ${txt.split(/\s+/).filter(Boolean).length} woorden`); if(nch>3000){ wc.style.color="var(--hbr)"; wc.textContent+=" · te lang voor LinkedIn (max 3.000)"; }
+    ph.append(el("span","aud",label+" · "+st.lang.toUpperCase()), wc);
+    const c=el("button","copy","Kopieer"); c.onclick=()=>copyText(txt,c); ph.append(c);
+    p.append(ph, el("pre",null,txt||"(nog niet geschreven)")); g.append(p);
+  });
+  out.append(g);
+  if (u.checks){ const s1=el("section","sec"); s1.append(el("h3",null,"Controleren vóór publicatie")); s1.append(lines(u.checks)); out.append(s1); }
+  if (u.sources){ const s2=el("section","sec"); s2.append(el("h3",null,"Bronnen per trend")); const ul=el("ul","lines"); u.sources.split(/\n/).map(l=>l.replace(/^\s*(?:-|\d+\.)\s*/,"").trim()).filter(Boolean).forEach(l=>ul.append(rich(el("li"),l))); s2.append(ul); out.append(s2); }
+  const L=el("div","links"); const a=el("a",null,"Weekupdate openen in Obsidian"); a.href=obsLink(u.obs); L.append(a);
+  if (D.weeks[w]){ const b=el("a",null,"Naar het weekoverzicht →"); b.href="#"; b.onclick=e=>{e.preventDefault(); go("__week:"+w);}; L.append(b); }
+  out.append(L);
+}
+
+// ---------- Begrippen (begrippenindex uit _tools/terms.py) ----------
+const TRENDW={nieuw:0,stijgend:1,stabiel:2,onbekend:2,dalend:3,geen:4};
+const tstate={q:"",f:"alle"};
+function spark(t, n, w, h){
+  const T=D.terms, wk=T.weeks.slice(-n), bw=w/n;
+  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg"); svg.setAttribute("width",w); svg.setAttribute("height",h); svg.setAttribute("viewBox",`0 0 ${w} ${h}`); svg.classList.add("spark");
+  const sh=wk.map(k=>{ const tot=T.per_week[k]||0, c=t.weekly[k]||0; return {k,c,tot,s:tot?c/tot:0}; });
+  const mx=Math.max(0.05,...sh.map(x=>x.s));
+  sh.forEach((x,i)=>{ const r=document.createElementNS("http://www.w3.org/2000/svg","rect"); const hh=x.c?Math.max(2,(h-1)*x.s/mx):1;
+    r.setAttribute("x",i*bw+1); r.setAttribute("y",h-hh); r.setAttribute("width",Math.max(1,bw-2)); r.setAttribute("height",hh); if(!x.c) r.setAttribute("class","z");
+    const ti=document.createElementNS("http://www.w3.org/2000/svg","title"); ti.textContent=`${weekLabel(x.k)}: ${x.c} van ${x.tot} notities${x.tot?` (${Math.round(100*x.s)}%)`:""}`; r.append(ti); svg.append(r); });
+  return svg;
+}
+function trendPill(t){ const p=el("span","pill "+t.trend,t.trend==="onbekend"?"te weinig historie":t.trend); p.title=`Laatste 4 weken: ${t.share_recent}% van de notities; de 12 weken daarvoor: ${t.share_before}%`; return p; }
+function termsView(){
+  const out=$("out"), T=D.terms;
+  const h=el("div","sec-h"); h.append(el("h3",null,"Begrippen"), el("span","n",`${T.terms.length} begrippen · bijgewerkt ${T.generated}`)); out.append(h);
+  out.append(el("p","tnote","In hoeveel van je bewaarde posts en artikelen komt een begrip voor. De balkjes tonen per week het aandeel van alle notities (laatste 16 weken). De trend vergelijkt de laatste 4 weken met de 12 weken daarvoor. Klik op een begrip voor de uitleg en de artikelen."));
+  const hd=el("div","terms-head"); const q=el("input"); q.type="search"; q.id="tq"; q.placeholder="Zoek een begrip of uitleg…"; q.value=tstate.q;
+  q.oninput=e=>{ tstate.q=e.target.value.toLowerCase(); fill(); };
+  const ch=el("div","tchips"); [["alle","Alle"],["nieuw","Nieuw"],["stijgend","Stijgend"],["dalend","Dalend"]].forEach(([k,l])=>{ const b=el("button",tstate.f===k?"on":null,l); b.onclick=()=>{ tstate.f=k; render(); }; ch.append(b); });
+  hd.append(q,ch); out.append(hd);
+  const list=el("div","tlist"); out.append(list);
+  function fill(){
+    list.innerHTML="";
+    const ts=T.terms.filter(t=>(tstate.f==="alle"||t.trend===tstate.f) && (!tstate.q || (t.name+" "+t.aliases.join(" ")+" "+t.uitleg).toLowerCase().includes(tstate.q)))
+      .sort((a,b)=>(TRENDW[a.trend]-TRENDW[b.trend]) || b.recent-a.recent || b.total-a.total);
+    if(!ts.length) list.append(el("div","empty","Geen begrippen gevonden."));
+    ts.forEach(t=>{ const r=el("div","trow"); r.onclick=()=>go("__term:"+t.slug);
+      const a=el("div"); const n=el("div","tn",t.name); if(t.soort) n.append(el("span","soort",t.soort)); n.append(trendPill(t)); a.append(n, el("div","tu",t.uitleg));
+      const sp=el("div","tsp"); sp.append(spark(t,16,112,30));
+      const m=el("div","tm"); m.append(el("b",null,String(t.recent))); m.append(document.createTextNode(`laatste 4 wk`)); m.append(el("div",null,`${t.total} totaal`)); m.append(el("div",null,`sinds ${t.first||"–"}`));
+      r.append(a,sp,m); list.append(r); });
+  }
+  fill();
+  if((T.candidates||[]).length){
+    const h2=el("div","sec-h"); h2.style.marginTop="28px"; h2.append(el("h3",null,"Nieuw opgedoken"), el("span","n","nog niet in de lijst; Claude beoordeelt ze bij het weekoverzicht")); out.append(h2);
+    const c=el("div","cands"); T.candidates.slice(0,30).forEach((x,i)=>{ const b=el("button",null,x.term); b.append(el("span",null,`${x.recent}×`)); b.title=`${x.recent} keer in de laatste 4 weken, ${x.before} keer in de 12 weken daarvoor · eerst gezien ${x.first} · bron: ${x.bron==="tag"?"tags van notities":"brontekst"}`; b.onclick=()=>go("__cand:"+i); c.append(b); });
+    out.append(c);
+  }
+}
+function termItems(ids){ const by=Object.fromEntries(D.items.map(i=>[i.id,i])); return ids.map(i=>by[i]).filter(Boolean).filter(pass); }
+function termView(slug){
+  const out=$("out"), t=D.terms.terms.find(x=>x.slug===slug); if(!t){ go("__terms"); return; }
+  const b=el("div","tdef"); const h=el("h2",null,t.name); h.append(trendPill(t)); b.append(h);
+  t.uitleg.split(/\n\s*\n/).forEach(p=>b.append(rich(el("p"),p.trim())));
+  const m=el("div","meta"); m.append(spark(t,16,160,34)); m.append(el("span",null,`${t.recent} keer in de laatste 4 weken (${t.share_recent}% van de notities) · ${t.share_before}% in de 12 weken daarvoor · ${t.total} totaal · eerst gezien ${t.first}`)); b.append(m);
+  if(t.aliases.length>1) b.append(el("div","tnote","Gezocht op: "+t.aliases.join(", ")));
+  const L=el("div","links"); const a=el("a",null,"← Alle begrippen"); a.href="#"; a.onclick=e=>{ e.preventDefault(); go("__terms"); }; L.append(a);
+  const o=el("a",null,"Uitleg aanpassen in Obsidian"); o.href=obsLink("reading/begrippen.md"); L.append(o); b.append(L);
+  out.append(b);
+  out.append(section(`Waar '${t.name}' voorkomt`, termItems(t.notes), "__term:"+slug));
+}
+function candView(i){
+  const out=$("out"), c=(D.terms.candidates||[])[+i]; if(!c){ go("__terms"); return; }
+  const b=el("div","tdef"); b.append(el("h2",null,c.term)); b.append(el("p",null,`Nog geen begrip in de lijst. ${c.recent} keer in de laatste 4 weken, ${c.before} keer in de 12 weken daarvoor, eerst gezien ${c.first}. Hieronder de meest recente artikelen waarin het voorkomt.`));
+  const L=el("div","links"); const a=el("a",null,"← Alle begrippen"); a.href="#"; a.onclick=e=>{ e.preventDefault(); go("__terms"); }; L.append(a); b.append(L); out.append(b);
+  out.append(section(`Waar '${c.term}' voorkomt`, termItems(c.notes), "__cand:"+i));
+}
+// Menugroepen (batches, weekupdates, weken): de drie meest recente zichtbaar, de rest achter 'Nog N tonen'.
+const NAV_KEY="leesinbox.navopen";
+const navOpen=(()=>{ try{ return new Set(JSON.parse(localStorage.getItem(NAV_KEY)||"[]")); }catch(e){ return new Set(); } })();
+function chevron(up){ const ns="http://www.w3.org/2000/svg"; const sv=document.createElementNS(ns,"svg"); sv.setAttribute("viewBox","0 0 16 16"); const pl=document.createElementNS(ns,"polyline"); pl.setAttribute("points", up?"3,10 8,5 13,10":"3,6 8,11 13,6"); sv.append(pl); return sv; }
+function navToggle(key){ navOpen.has(key)?navOpen.delete(key):navOpen.add(key); try{ localStorage.setItem(NAV_KEY,JSON.stringify([...navOpen])); }catch(e){} renderNav(); }
+// Kop met een pijltje (hoekje omlaag = inklappen kan / omhoog = uitgeklapt). Klik op de kop klapt de groep in of uit.
+function navHead(nav, title, key, isOpen){
+  const h=el("h2","coll"); h.append(el("span",null,title)); const c=el("span","chev"); c.append(chevron(isOpen)); h.append(c);
+  h.title=isOpen?"Klik om in te klappen":"Klik om alles te tonen"; h.setAttribute("role","button"); h.tabIndex=0;
+  h.onclick=()=>navToggle(key); h.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); navToggle(key); } };
+  nav.append(h);
+}
+// Groep met de drie meest recente; de knop om in of uit te klappen staat altijd op dezelfde plek, direct onder die drie.
+function navGroup(nav, key, title, buttons, keep=3){
+  const open=navOpen.has(key), many=buttons.length>keep;
+  if(many) navHead(nav,title,key,open); else nav.append(el("h2",null,title));
+  buttons.slice(0,keep).forEach(b=>nav.append(b));
+  if(!many) return;
+  const rest=buttons.slice(keep);
+  const m=el("button","navmore"); m.append(chevron(open), document.createTextNode(open?"Minder tonen":`Nog ${rest.length} tonen`)); m.onclick=()=>navToggle(key);
+  if(open){ nav.append(m); rest.forEach(b=>nav.append(b)); }
+  else { rest.filter(b=>b.classList.contains("on")).forEach(b=>nav.append(b)); nav.append(m); }
+}
+function renderNav(){
+  const nav=$("nav"); nav.innerHTML="";
+  const vis = D.items.filter(pass);
+  const add=(key,label,n)=>{ const b=el("button",(st.theme===key||st.extra.includes(key))?"on":null); b.append(el("span",null,label), el("span","n",n)); if(D.themes[key]) b.title="Ctrl-klik (Mac: Cmd-klik) om te combineren met het gekozen thema"; b.onclick=e=>pickTheme(key,e); nav.append(b); };
+  nav.append(el("h2",null,"Overzicht"));
+  add("__overview","Per thema",""); add("__all","Alle items",vis.length);
+  { const nf=D.items.filter(i=>starsOf(i)>0).length; add("__fav","★ Favorieten",nf); }
+  if (D.terms && D.terms.terms){ const nn=D.terms.terms.filter(t=>t.trend==="nieuw").length; const b=el("button",(st.theme==="__terms"||st.theme.startsWith("__term:")||st.theme.startsWith("__cand:"))?"on":null); b.append(el("span",null,"Begrippen"), el("span","n",nn?`${nn} nieuw`:String(D.terms.terms.length))); b.onclick=()=>go("__terms"); nav.append(b); }
+  if (D.cb && D.cb.reg && D.cb.reg.length){
+    const cdicht=navOpen.has("cb-dicht"); navHead(nav,"Consultancy","cb-dicht",!cdicht);
+    const nv=D.items.filter(i=>i.cb&&i.cb.length).length;
+    const b=el("button",st.theme==="__cb"?"on":null); b.append(el("span",null,"Overzicht per firma"), el("span","n",String(nv))); b.title="Matrix thema × firma en de gemene deler per thema"; b.onclick=()=>go("__cb"); nav.append(b);
+    if(!cdicht||st.theme.startsWith("__cb:")) D.cb.themes.forEach(t=>{ if(cdicht&&!st.theme.startsWith("__cb:"+t.slug)) return;
+      const x=el("button","sub"+(st.theme.split("|")[0]==="__cb:"+t.slug?" on":"")); const l=el("span",null,cbShort(t.slug)); if((D.cb.dossiers||{})[t.slug]){ const dd=el("span","dos","●"); dd.title="Er is een dossier met de gemene deler"; l.append(dd); }
+      x.append(l, el("span","n",String(D.items.filter(i=>i.cb&&i.cb.includes(t.slug)).filter(pass).length))); x.title=t.naam; x.onclick=()=>go("__cb:"+t.slug); nav.append(x); });
+  }
+  const bs=(D.batches||[]).slice().reverse();
+  if (bs.length){ navGroup(nav,"batches","Batches",bs.map(x=>{ const b=el("button",st.theme==="__batch:"+x.n?"on":null); const l=el("span",null,""); l.append(el("span","bnum",String(x.n)), document.createTextNode(" Batch "+x.n)); b.append(l, el("span","n",batchWhen(x.dt))); b.title=x.title||""; b.onclick=()=>go("__batch:"+x.n); return b; })); }
+  const ups=Object.keys(D.updates||{}).sort().reverse();
+  if (ups.length){ navGroup(nav,"updates","Weekupdates",ups.map(w=>{ const b=el("button",st.theme==="__update:"+w?"on":null); b.append(el("span",null,weekLabel(w)+" · LinkedIn"), el("span","n",D.updates[w].status)); b.onclick=()=>go("__update:"+w); return b; })); }
+  const wks=[...new Set(D.items.map(i=>i.week).filter(Boolean))].sort().reverse();
+  navGroup(nav,"weken","Weken",wks.map(w=>{ const b=el("button",st.theme==="__week:"+w?"on":null); const l=el("span",null,weekLabel(w)); if(D.weeks[w]) l.append(el("span","star","● overzicht")); b.append(l, el("span","n",vis.filter(i=>i.week===w).length)); b.onclick=()=>go("__week:"+w); return b; }));
+  // Thema's: standaard allemaal zichtbaar; het pijltje in de kop klapt de hele lijst in (het actieve thema blijft staan).
+  const tdicht=navOpen.has("themas-dicht");
+  navHead(nav,"Thema's","themas-dicht",!tdicht);
+  Object.entries(D.themes).forEach(([k,v])=>{ if(!tdicht||isSel(k)) add(k,v,vis.filter(own).filter(i=>inTheme(i,k)).length); });
+  if(!tdicht||st.theme==="__none") add("__none","Zonder thema",vis.filter(own).filter(i=>inTheme(i,"__none")).length);
+}
+// Bronteller per weergave (Jacko, 2026-10-27): de tegels tellen wat er in de gekozen week, batch of het gekozen thema staat,
+// met de andere filters (relevantie, video, zoekterm enz.) toegepast, maar niet het bronfilter zelf.
+function srcScope(){
+  const k=st.theme;
+  if(k.startsWith("__week:")){ const w=k.slice(7); return D.items.filter(i=>i.week===w); }
+  if(k.startsWith("__batch:")){ const x=(D.batches||[]).find(b=>b.n===+k.slice(8)); return x ? x.notes.map(id=>byId(id)).filter(Boolean) : D.items; }
+  if(k==="__fav") return D.items.filter(i=>starsOf(i)>0);
+  if(k==="__none") return D.items.filter(i=>inTheme(i,"__none"));
+  if(D.themes[k]){ const ts=selThemes(); return D.items.filter(i=>ts.every(x=>inTheme(i,x))); }
+  if(k.startsWith("__cbw:")){ const t=k.slice(6); return D.items.filter(i=>!own(i)&&(t==="__all"||inTheme(i,t))); }
+  return D.items;
+}
+function renderSrcs(){
+  const box=$("srcs"); box.innerHTML="";
+  const keep=st.srcs; let scope; st.srcs=new Set(); try{ scope=srcScope().filter(i=>pass(i)); } finally{ st.srcs=keep; }
+  const cnt={}; scope.forEach(i=>cnt[i.source]=(cnt[i.source]||0)+1); keep.forEach(s=>{ if(!(s in cnt)) cnt[s]=0; });
+  Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).forEach(s=>{
+    const c=el("button","chip"+(st.srcs.has(s)?" on":"")); const d=el("span","dot"); d.style.background=srcCol(s);
+    c.append(d, document.createTextNode(`${srcName(s)} ${cnt[s]}`));
+    c.onclick=()=>{ st.srcs.has(s)?st.srcs.delete(s):st.srcs.add(s); render(); }; box.append(c);
+  });
+  const active=st.srcs.size||st.q||st.rel||st.vid||st.course||st.bank||st.claude||st.lm||st.onep||st.fav||!["__overview","__all","__terms","__fav","__cb"].includes(st.theme)&&!/^__(week|update|term|cand|batch|cb|cbw):/.test(st.theme);
+  if (active){ const r=el("button","resetall","Alle filters wissen"); r.onclick=()=>{ st.srcs.clear(); st.q=""; st.rel=""; st.vid=false; st.course=false; $("course").checked=false; $("coursel").classList.remove("on"); st.bank=false; $("bank").checked=false; $("bankl").classList.remove("on"); st.claude=false; $("claudef").checked=false; $("claudel").classList.remove("on"); st.lm=false; $("lmf").checked=false; $("lml").classList.remove("on"); st.onep=false; $("onep").checked=false; $("onepl").classList.remove("on"); st.fav=false; $("fav").checked=false; $("favl").classList.remove("on"); $("q").value=""; $("rel").value=""; $("vid").checked=false; $("vidl").classList.remove("on"); go("__overview"); }; box.append(r); }
+}
+function section(title, list, key, limit){
+  const s=el("section","sec"); const h=el("div","sec-h");
+  h.append(el("h3",null,title), el("span","n",list.length+" items"), mix(list));
+  if (limit && list.length>limit){ const b=el("button",null,`Toon alle ${list.length} →`); b.onclick=()=>go(key); h.append(b); }
+  if (!limit && key!=="__overview"){ const ks=String(key), cbw=ks.startsWith("__cbw:"), cbk=!cbw&&ks.startsWith("__cb"); const back=cbw?(D.themes[ks.slice(6)]?ks.slice(6):"__overview"):cbk?"__cb":"__overview"; const c=el("button","clear",cbw?"← Terug":"✕ Filter wissen"); c.title=cbw?"Terug naar de gewone lijst":cbk?"Terug naar het consultancy-overzicht":"Terug naar het overzicht per thema (of druk op Esc)"; c.onclick=()=>go(back); h.append(c); }
+  s.append(h); const g=el("div","grid");
+  sorted(list).slice(0, limit||list.length).forEach(i=>g.append(card(i)));
+  if (!list.length) g.append(el("div","empty","Geen items met deze filters."));
+  s.append(g); return s;
+}
+function render(){
+  renderNav(); renderSrcs();
+  const out=$("out"); out.innerHTML="";
+  const vis=D.items.filter(pass);
+  if (st.theme.startsWith("__week:")) { weekView(st.theme.slice(7)); return; }
+  if (st.theme.startsWith("__update:")) { updateView(st.theme.slice(9)); return; }
+  if (st.theme.startsWith("__batch:")) { batchView(+st.theme.slice(8)); return; }
+  if (st.theme==="__cb") { cbView(); return; }
+  if (st.theme.startsWith("__cb:")) { cbThemeView(st.theme.slice(5)); return; }
+  if (st.theme==="__terms") { termsView(); return; }
+  if (st.theme==="__fav") { favView(); return; }
+  if (st.theme.startsWith("__term:")) { termView(st.theme.slice(7)); return; }
+  if (st.theme.startsWith("__cand:")) { candView(st.theme.slice(7)); return; }
+  if (st.theme==="__overview"){
+    const lw=Object.keys(D.weeks).sort().reverse()[0];
+    if (lw){ const bn=el("div","banner"); bn.append(el("b",null,`Weekoverzicht ${weekLabel(lw).toLowerCase()} →`)); bn.append(rich(el("span"),D.weeks[lw].thread)); bn.onclick=()=>go("__week:"+lw); out.append(bn); }
+    Object.entries(D.themes).forEach(([k,v])=>{ const all=vis.filter(i=>inTheme(i,k)), l=all.filter(own), c=all.filter(i=>!own(i)); if(l.length) out.append(section(v,l,k,3)); if(c.length) out.append(cbMore(c,"__cbw:"+k,"Ook over dit thema")); });
+    const none=vis.filter(own).filter(i=>inTheme(i,"__none")); if(none.length) out.append(section("Zonder thema",none,"__none",3));
+    if(!vis.length) out.append(el("div","empty","Geen items met deze filters."));
+  } else if (st.theme==="__all"){ out.append(section("Alle items",vis.filter(own),"__all")); const c=vis.filter(i=>!own(i)); if(c.length) out.append(section("◆ Uit de consultancyrapporten",c,"__cbw:__all",6)); }
+  else if (st.theme.startsWith("__cbw:")){ const k=st.theme.slice(6); const l=vis.filter(i=>!own(i)).filter(i=>k==="__all"||inTheme(i,k)); out.append(section("◆ Consultancyfirma's over: "+(k==="__all"?"alle thema's":(D.themes[k]||k)), l, st.theme)); }
+  else if (D.themes[st.theme]){
+    const ts=selThemes(); const all=vis.filter(i=>ts.every(x=>inTheme(i,x))); const s=section(ts.map(x=>D.themes[x]).join(" + "), all.filter(own), st.theme);
+    s.insertBefore(el("div","combohint", ts.length>1 ? `Combinatie: alleen items met alle ${ts.length} thema's. Ctrl-klik (Mac: Cmd-klik) op een thema om het toe te voegen of weg te halen.` : "Tip: Ctrl-klik (Mac: Cmd-klik) op een tweede thema om alleen items met beide thema's te zien."), s.children[1]);
+    out.append(s);
+    const c=all.filter(i=>!own(i)); if(c.length) out.append(section("◆ Uit de consultancyrapporten over dit thema",c,"__cbw:"+st.theme,6));
+  }
+  else out.append(section(st.theme==="__none"?"Zonder thema":(D.themes[st.theme]||st.theme), vis.filter(i=>inTheme(i,st.theme)), st.theme));
+}
+// ---------- Consultancy-register (reading/consultancy/, _tools/consultancy.py) ----------
+// Publicaties van de grote adviesfirma's en HBR over AI-transformatie, met 8 consultancythema's los van de watchlist.
+// Matrix thema × firma: vet = leesnotities in de vault, grijs = totaal in het register (hoofdset 2026). Klik op een cel, rij of kolom.
+const cbName = t => ((D.cb&&D.cb.themes)||[]).find(x=>x.slug===t)?.naam || t;
+function cbItems(theme, src){ return D.items.filter(i=>i.cb&&i.cb.includes(theme)&&(!src||i.source===src)).filter(pass); }
+function cbReg(theme, src){ return (D.cb.reg||[]).filter(r=>r.sel==="hoofdset"&&r.themas.includes(theme)&&(!src||r.src===src)); }
+function cbHead(){
+  const w=el("div","cbwrap"); w.append(el("h2",null,"Consultancy: hoe de grote firma's naar AI-transformatie kijken"));
+  const reg=D.cb.reg||[], hs=reg.filter(r=>r.sel==="hoofdset"), inv=hs.filter(r=>r.iv).length, notes=D.items.filter(i=>i.cb&&i.cb.length).length;
+  const sub=el("div","sub",`Register: ${reg.length} publicaties, waarvan ${hs.length} uit 2026 (hoofdset) · ${inv} daarvan in de vault · ${notes} leesnotities met een consultancythema · `);
+  const a=el("a",null,"register openen in Obsidian"); a.href=obsLink(D.cb.obs||"reading/consultancy/bronnen.md"); sub.append(a); w.append(sub);
+  return w;
+}
+function cbMatrix(curTheme, curSrc){
+  const tb=el("table","cbm"); const thead=el("thead"); const hr=el("tr"); hr.append(el("th","rowh","Thema"));
+  D.cb.firms.forEach(f=>{ const th=el("th","colh",f.kort); th.title=f.naam+": alle items van deze firma"; th.onclick=()=>{ st.srcs.clear(); st.srcs.add(f.src); go("__cb"); }; hr.append(th); });
+  hr.append(el("th","tot","Totaal")); thead.append(hr); tb.append(thead);
+  const tbody=el("tbody");
+  D.cb.themes.forEach(t=>{
+    const tr=el("tr",curTheme===t.slug?"on":null); const rh=el("td","rowh",t.naam); rh.title="Alle items met dit consultancythema"; rh.onclick=()=>go("__cb:"+t.slug); tr.append(rh);
+    let tv=0, tr_=0;
+    D.cb.firms.forEach(f=>{ const regs=cbReg(t.slug,f.src), nv=cbItems(t.slug,f.src).length; tv+=nv; tr_+=regs.length;
+      const td=el("td","c"+((!regs.length&&!nv)?" none":"")); if(regs.length||nv){ td.append(el("b",null,String(nv))); td.append(document.createTextNode(" ")); td.append(el("span",null,"/"+regs.length)); } else td.textContent="·";
+      td.title=`${t.naam} × ${f.naam}: ${nv} leesnotitie(s) in de vault, ${regs.length} in het register`; td.onclick=()=>go("__cb:"+t.slug+"|"+f.src); tr.append(td); });
+    const tt=el("td","tot"); tt.append(el("b",null,String(tv)), document.createTextNode(" "), el("span",null,"/"+tr_)); tr.append(tt); tbody.append(tr);
+  });
+  tb.append(tbody);
+  const box=el("div"); box.append(tb, el("div","legend","Per cel: vet = leesnotities in de vault (met samenvatting en volledige tekst), grijs = publicaties in het register (hoofdset 2026). Een item kan meer dan één thema hebben. Klik op een cel, een thema of een firma."));
+  return box;
+}
+function cbCards(){
+  const g=el("div","cbgrid"); const ds=D.cb.dossiers||{};
+  D.cb.themes.forEach(t=>{ const c=el("div","cbc"); c.append(el("h4",null,cbShort(t.slug))); const d=ds[t.slug];
+    if(d&&d.kern) c.append(rich(el("p"),d.kern)); else c.append(el("p","none","Gemene deler volgt (dossier nog niet geschreven)."));
+    const l=cbItems(t.slug), fs=new Set(l.map(i=>i.source)); const k=el("div","k",""); rich(k,`**${l.length}** notities · ${fs.size} bronnen`+(d?` · dossier ${d.dt||""}`:"")); c.append(k);
+    c.title=t.naam; c.onclick=()=>go("__cb:"+t.slug); g.append(c); });
+  return g;
+}
+function cbDossier(slug){
+  const d=(D.cb.dossiers||{})[slug]; if(!d) return null;
+  const box=el("div","wk dossier"); box.append(el("h2",null,"Gemene deler: "+cbShort(slug)));
+  const sub=el("div","sub",`${d.status||"dossier"} · bijgewerkt ${d.dt||"?"} · ${d.n||"?"} bronnen van ${d.firmas||"?"} firma's · `); const a=el("a",null,"openen in Obsidian"); a.href=obsLink(d.obs); sub.append(a); box.append(sub);
+  if(d.kern) box.append(rich(el("div","kern"),d.kern));
+  const body=md(d.body); body.className="body fold"; box.append(body);
+  const more=el("button","dmore","Lees het hele dossier ↓"); more.onclick=()=>{ const f=body.classList.toggle("fold"); more.textContent=f?"Lees het hele dossier ↓":"Inklappen ↑"; }; box.append(more);
+  return box;
+}
+function cbView(){
+  const out=$("out"); const head=cbHead(); head.append(cbMatrix()); out.append(head);
+  const gh=el("div","sec-h"); gh.append(el("h3",null,"De gemene deler per thema"), el("span","n","klik op een thema voor het dossier en de bronnen")); out.append(gh); out.append(cbCards());
+  D.cb.themes.forEach(t=>{ const l=cbItems(t.slug); if(l.length) out.append(section("◆ "+t.naam,l,"__cb:"+t.slug,3)); });
+  if(!D.items.some(i=>i.cb&&i.cb.length)) out.append(el("div","empty","Nog geen leesnotities met een consultancythema."));
+}
+function cbThemeView(key){
+  const [theme,src]=key.split("|"); const out=$("out"); const t=D.cb.themes.find(x=>x.slug===theme); if(!t){ go("__cb"); return; }
+  const nav=el("div","cbnav"); const back=el("button","chip","← Alle consultancythema's"); back.onclick=()=>go("__cb"); nav.append(back);
+  if(src){ const f=D.cb.firms.find(x=>x.src===src); const c=el("button","chip on",(f?f.naam:src)+" ✕"); c.title="Firma-filter weghalen"; c.onclick=()=>go("__cb:"+theme); nav.append(c); }
+  out.append(nav);
+  const dos=cbDossier(theme); if(dos) out.append(dos); else out.append(el("div","combohint","Voor dit thema is nog geen dossier met de gemene deler geschreven."));
+  const list=cbItems(theme,src); const f=D.cb.firms.find(x=>x.src===src);
+  out.append(section("◆ "+t.naam+(f?" · "+f.naam:""), list, key));
+  const mx=el("div","cbwrap"); mx.append(el("div","sub","Per firma: vet = in de vault, grijs = in het register. Klik op een cel om op één firma te filteren.")); mx.append(cbMatrix(theme,src)); out.append(mx);
+  const todo=cbReg(theme,src).filter(r=>!r.iv);
+  if(todo.length){
+    const s=el("section","sec"); const h=el("div","sec-h"); h.append(el("h3",null,"Nog niet in de vault"), el("span","n",todo.length+" publicaties uit het register")); s.append(h);
+    const g=el("div","todo");
+    todo.sort((a,b)=>(a.firma.localeCompare(b.firma))||a.titel.localeCompare(b.titel)).forEach(r=>{
+      const row=el("div","row"); const b=el("span","badge",srcName(r.src)); b.style.background=srcCol(r.src); row.append(b);
+      const tt=el("div","t"); const a=el("a",null,r.titel); a.href=r.url; a.target="_blank"; a.rel="noopener"; tt.append(a); row.append(tt);
+      const k=el("div","k",r.type+" · "+r.jaar); if(r.pdf){ const pa=el("a",null,"PDF"); pa.href=r.pdf; pa.target="_blank"; pa.rel="noopener"; k.append(pa); } row.append(k);
+      if(r.oms||r.opm) row.append(el("div","o",r.opm?("⚠ "+r.opm):r.oms));
+      g.append(row);
+    });
+    s.append(g); out.append(s);
+  }
+}
+// ---------- Batches (verslag na elke batch, reading/batches/, _tools/batchlog.py) ----------
+const MAANDEN=["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
+function batchWhen(dt){ const m=(dt||"").match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}:\d{2}))?/); return m ? `${+m[3]} ${MAANDEN[+m[2]-1]}${m[4]?" "+m[4]:""}` : (dt||""); }
+function batchView(n){
+  const out=$("out"), x=(D.batches||[]).find(b=>b.n===n); if(!x){ go("__overview"); return; }
+  const box=el("div","wk batch"); const h=el("h2",null,""); h.append(el("span","bnum big",String(x.n)), document.createTextNode(" Batch "+x.n)); box.append(h);
+  box.append(el("div","sub",`${batchWhen(x.dt)} · ${x.items||x.notes.length} items`+(x.title?" · "+x.title:"")));
+  box.append(md(x.body));
+  const L=el("div","links"); const a=el("a",null,"Verslag openen in Obsidian"); a.href=obsLink(x.obs); L.append(a);
+  const all=(D.batches||[]).map(b=>b.n), i=all.indexOf(n);
+  if(i>0){ const p=el("a",null,"← Batch "+all[i-1]); p.href="#"; p.onclick=e=>{e.preventDefault(); go("__batch:"+all[i-1]);}; L.append(p); }
+  if(i<all.length-1){ const q=el("a",null,"Batch "+all[i+1]+" →"); q.href="#"; q.onclick=e=>{e.preventDefault(); go("__batch:"+all[i+1]);}; L.append(q); }
+  box.append(L); out.append(box);
+  const list=x.notes.map(id=>byId(id)).filter(Boolean);
+  const s=el("section","sec"); const sh=el("div","sec-h"); sh.append(el("h3",null,"Leesnotities uit deze batch"), el("span","n",list.length+" items"), mix(list)); s.append(sh);
+  const g=el("div","grid"); sorted(list).forEach(i=>g.append(card(i))); s.append(g); out.append(s);
+}
+// Terugspringen (Jacko, 2026-10-17): wie op een link naar een notitie klikt, kan met "↩ Terug" weer naar de plek waar hij vandaan kwam.
+// Werkt als een stapel: van kaart naar kaart doorklikken en daarna stap voor stap terug.
+const backStack=[];
+function backUI(){
+  document.querySelectorAll(".backbtn").forEach(b=>b.remove());
+  if(!backStack.length) return;
+  const f=el("button","backbtn float","↩ Terug"); f.title="Terug naar waar je vandaan kwam"; f.onclick=goBack; document.body.append(f);
+  const top=backStack[backStack.length-1], c=[...document.querySelectorAll(".card")].find(c=>c.dataset.id===top.to);
+  if(c){ const b=el("button","backbtn incard","↩ Terug naar waar je was"); b.title=f.title; b.onclick=e=>{ e.stopPropagation(); goBack(); }; c.prepend(b); }
+}
+function goBack(){
+  const t=backStack.pop(); if(!t) return;
+  if(t.el && t.el.isConnected){ t.el.scrollIntoView({behavior:"smooth",block:"center"}); t.el.classList.add("backflash"); setTimeout(()=>t.el.classList.remove("backflash"),1600); }
+  else window.scrollTo({top:t.y,behavior:"smooth"});
+  backUI();
+}
+function showNote(id, from){
+  if(from) backStack.push({el:from, y:window.scrollY, to:id});
+  let c=[...document.querySelectorAll(".card")].find(c=>c.dataset.id===id);
+  if(!c){ const it=byId(id); if(!it) return; const s=el("section","sec"); const g=el("div","grid"); g.append(card(it)); s.append(g); $("out").append(s); c=g.firstChild; }
+  toggleCard(id,true); if(from) backUI(); c.scrollIntoView({behavior:"smooth",block:"start"}); c.classList.add("flash"); setTimeout(()=>c.classList.remove("flash"),1600);
+}
+function go(k){ backStack.length=0; backUI(); st.theme=k; st.extra=[]; render(); window.scrollTo({top:0}); }
+$("q").oninput=e=>{ st.q=e.target.value.trim().toLowerCase(); render(); };
+$("rel").onchange=e=>{ st.rel=e.target.value; render(); };
+$("sort").onchange=e=>{ st.sort=e.target.value; render(); };
+$("vid").onchange=e=>{ st.vid=e.target.checked; $("vidl").classList.toggle("on",st.vid); render(); };
+$("fav").onchange=e=>{ st.fav=e.target.checked; $("favl").classList.toggle("on",st.fav); render(); };
+$("onep").onchange=e=>{ st.onep=e.target.checked; $("onepl").classList.toggle("on",st.onep); render(); };
+$("course").onchange=e=>{ st.course=e.target.checked; $("coursel").classList.toggle("on",st.course); render(); };
+$("bank").onchange=e=>{ st.bank=e.target.checked; $("bankl").classList.toggle("on",st.bank); render(); };
+$("claudef").onchange=e=>{ st.claude=e.target.checked; $("claudel").classList.toggle("on",st.claude); render(); };
+$("lmf").onchange=e=>{ st.lm=e.target.checked; $("lml").classList.toggle("on",st.lm); render(); };
+$("meta").textContent=`${D.items.length} leesnotities · bijgewerkt ${D.generated}`;
+render();
+</script>
+</body>
+</html>
